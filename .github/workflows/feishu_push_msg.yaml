@@ -1,30 +1,40 @@
 name: feishu_push_msg
+
 on:
   pull_request:
   push:
     branches:
       - main
+
 jobs:
   test_msg_type_post:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: ./
-        with:
-          webhook: ${{ secrets.FEISHU_ROBOT_WEBHOOK_URL }}
-          title: I'm title
-          content: |
+      - name: Send Feishu message using curl
+        env:
+          FEISHU_WEBHOOK_URL: ${{ secrets.FEISHU_ROBOT_WEBHOOK_URL }}
+          TITLE: "I'm title"
+          CONTENT: |
             I'm message body
 
             from: ${{ github.repository }}
+        run: |
+          curl -X POST -H "Content-Type: application/json" -d '{
+            "msg_type": "text",
+            "content": {
+              "text": "${{ env.TITLE }}\n${{ env.CONTENT }}"
+            }
+          }' $FEISHU_WEBHOOK_URL
+
   test_msg_type_post_by_using_bin_release:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Send feishu message
+      - name: Download and send Feishu message using binary release
         env:
           ACTIONS_FEISHU_TAG: 'v1.3.1'
-          INPUT_WEBHOOK: "${{ secrets.FEISHU_ROBOT_WEBHOOK_URL }}"
+          INPUT_WEBHOOK: ${{ secrets.FEISHU_ROBOT_WEBHOOK_URL }}
           INPUT_TITLE: "I'm title"
           INPUT_CONTENT: "I'm message body\nfrom: ${{ github.repository }}"
         run: |
