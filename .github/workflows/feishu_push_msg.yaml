@@ -12,14 +12,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: ./
+      - name: Send feishu message with custom action
+        uses: ./
         with:
           webhook: ${{ secrets.FEISHU_URL }}
-          title: I'm title
+          title: "Push Notification"
           content: |
-            I'm message body
-
-            from: ${{ github.repository }}
+            Push Time: ${{ github.event.head_commit.timestamp }}
+            Commit Message: ${{ github.event.head_commit.message }}
+            Committer: ${{ github.event.head_commit.committer.name }}
 
   test_msg_type_post_by_using_bin_release:
     runs-on: ubuntu-latest
@@ -29,8 +30,11 @@ jobs:
         env:
           ACTIONS_FEISHU_TAG: 'v1.3.1'
           INPUT_WEBHOOK: "${{ secrets.FEISHU_URL }}"
-          INPUT_TITLE: "I'm title"
-          INPUT_CONTENT: "I'm message body\nfrom: ${{ github.repository }}"
+          INPUT_TITLE: "Push Notification"
+          INPUT_CONTENT: |
+            Push Time: ${{ github.event.head_commit.timestamp }}
+            Commit Message: ${{ github.event.head_commit.message }}
+            Committer: ${{ github.event.head_commit.committer.name }}
         run: |
           wget -q https://github.com/xiachufang/actions-feishu/releases/download/${{ env.ACTIONS_FEISHU_TAG }}/linux-amd64-actions-feishu.tar.gz
           tar zxf linux-amd64-actions-feishu.tar.gz feishu
