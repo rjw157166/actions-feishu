@@ -16,11 +16,12 @@ jobs:
         uses: ./
         with:
           webhook: ${{ secrets.FEISHU_URL }}
-          title: "Push Notification"
+          title: "Hpc-Cloud代码推送通知"
           content: |
-            Push Time: ${{ github.event.head_commit.timestamp }}
-            Commit Message: ${{ github.event.head_commit.message }}
-            Committer: ${{ github.event.head_commit.committer.name }}
+            "**推送时间**": ${{ github.event.head_commit.timestamp }}
+            "**推送**": ${{ github.event.head_commit.message }}
+            "**提交账号**": ${{ github.event.head_commit.committer.name }}
+            "**推送人**": ${{ github.event.head_commit.committer.name }}
 
   test_msg_type_post_by_using_bin_release:
     runs-on: ubuntu-latest
@@ -30,11 +31,12 @@ jobs:
         env:
           ACTIONS_FEISHU_TAG: 'v1.3.1'
           INPUT_WEBHOOK: "${{ secrets.FEISHU_URL }}"
-          INPUT_TITLE: "Push Notification"
+          INPUT_TITLE: "Hpc-Cloud代码推送通知"
           INPUT_CONTENT: |
-            Push Time: ${{ github.event.head_commit.timestamp }}
-            Commit Message: ${{ github.event.head_commit.message }}
-            Committer: ${{ github.event.head_commit.committer.name }}
+            "**推送时间**": ${{ github.event.head_commit.timestamp }}
+            "**推送**": ${{ github.event.head_commit.message }}
+            "**提交账号**": ${{ github.event.head_commit.committer.name }}
+            "**推送人**": ${{ github.event.head_commit.committer.name }}
         run: |
           wget -q https://github.com/xiachufang/actions-feishu/releases/download/${{ env.ACTIONS_FEISHU_TAG }}/linux-amd64-actions-feishu.tar.gz
           tar zxf linux-amd64-actions-feishu.tar.gz feishu
