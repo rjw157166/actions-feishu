@@ -18,10 +18,8 @@ jobs:
           webhook: ${{ secrets.FEISHU_URL }}
           title: "Hpc-Cloud代码推送通知"
           content: |
-            "**推送时间**": ${{ github.event.head_commit.timestamp }}
-            "**推送**": ${{ github.event.head_commit.message }}
-            "**提交账号**": ${{ github.event.head_commit.committer.name }}
-            "**推送人**": ${{ github.event.head_commit.committer.name }}
+            **推送时间**: ${{ github.event.head_commit.timestamp }}
+            **Commit日志**: ${{ github.event.head_commit.message }}
 
   test_msg_type_post_by_using_bin_release:
     runs-on: ubuntu-latest
@@ -33,10 +31,8 @@ jobs:
           INPUT_WEBHOOK: "${{ secrets.FEISHU_URL }}"
           INPUT_TITLE: "Hpc-Cloud代码推送通知"
           INPUT_CONTENT: |
-            "**推送时间**": ${{ github.event.head_commit.timestamp }}
-            "**推送**": ${{ github.event.head_commit.message }}
-            "**提交账号**": ${{ github.event.head_commit.committer.name }}
-            "**推送人**": ${{ github.event.head_commit.committer.name }}
+            **推送时间**: ${{ github.event.head_commit.timestamp }}
+            **Commit日志**: ${{ github.event.head_commit.message }}
         run: |
           wget -q https://github.com/xiachufang/actions-feishu/releases/download/${{ env.ACTIONS_FEISHU_TAG }}/linux-amd64-actions-feishu.tar.gz
           tar zxf linux-amd64-actions-feishu.tar.gz feishu
